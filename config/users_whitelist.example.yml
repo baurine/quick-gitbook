@@ -1,0 +1,14 @@
+default: &default
+  users: ['*']
+
+development:
+  <<: *default
+
+staging:
+  <<: *default
+
+production:
+  <<: *default
+
+test:
+  <<: *default

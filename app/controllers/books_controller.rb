@@ -9,7 +9,8 @@ class BooksController < ApplicationController
     # step 1: check whether @user is enable
     # you can enable all users repo or just yourself repo
     # you can config it in an .yml file
-    if @user != 'baurine'
+    allowed_users = USERS_WHITELIST['users']
+    if !allowed_users.include?('*') && !allowed_users.include?(@user)
       @error << "Sorry, the user #{@user} is not allowed."
       return
     end
@@ -20,7 +21,7 @@ class BooksController < ApplicationController
     res = Net::HTTP.get_response(uri)
     unless res.is_a?(Net::HTTPSuccess)
       @error << "Error: #{res.message}."
-      @error << "This repo doesn't exist or doesn't contain a SUMMARY.md file."
+      @error << "This repo doesn't exist in github or doesn't contain a SUMMARY.md file."
       return
     end
 
@@ -34,7 +35,6 @@ class BooksController < ApplicationController
     re_build = true
     if Dir.exists?(@repo)
       Dir.chdir(@repo)
-      puts Dir.pwd
       `git fetch origin`
       git_status = `git status`
       re_build = false if git_status.include?("Your branch is up-to-date")
