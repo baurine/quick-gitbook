@@ -1,7 +1,56 @@
+require 'net/http'
+
 class BooksController < ApplicationController
   def show
     @user = params[:user]
     @repo = params[:repo]
-    puts "#{@user} ---- #{@repo}"
+    @error = []
+
+    # step 1: check whether @user is enable
+    # you can enable all users repo or just yourself repo
+    # you can config it in an .yml file
+    if @user != 'baurine'
+      @error << "Sorry, the user #{@user} is not allowed."
+      return
+    end
+
+    # step 2: check "https://github.com/#{@user}/#{@repo}/blob/master/SUMMARY.md" exists?
+    summary_url = "https://github.com/#{@user}/#{@repo}/blob/master/SUMMARY.md"
+    uri = URI(summary_url)
+    res = Net::HTTP.get_response(uri)
+    unless res.is_a?(Net::HTTPSuccess)
+      @error << "Error: #{res.message}."
+      @error << "This repo doesn't exist or doesn't contain a SUMMARY.md file."
+      return
+    end
+
+    # step 3: check folder "public/books/#{@user}" exists? if not, create it
+    Dir.chdir(Rails.public_path)
+    user_path = "books/#{@user}"
+    FileUtils.mkdir_p(user_path) unless Dir.exists?(user_path)
+    Dir.chdir(user_path)
+
+    # step 4: clone or update repo, rebuild book if need
+    re_build = true
+    if Dir.exists?(@repo)
+      Dir.chdir(@repo)
+      puts Dir.pwd
+      `git fetch origin`
+      git_status = `git status`
+      re_build = false if git_status.include?("Your branch is up-to-date")
+      `git rebase origin/master` if re_build
+    else
+      # git clone
+      repo_url = "git@github.com:#{@user}/#{@repo}.git"
+      `git clone #{repo_url}`
+      Dir.chdir(@repo)
+    end
+    re_build = true unless Dir.exists?('_book')
+    # gitbook build
+    `gitbook build` if re_build
+
+    # final
+    book_url = "/books/#{@user}/#{@repo}/_book/"
+    redirect_to book_url
   end
 end
