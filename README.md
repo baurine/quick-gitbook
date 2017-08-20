@@ -11,7 +11,7 @@ It is simple and direct, not powerful and robust, just works.
 1. Run `bundle` to install gems
 1. Copy `config/users_whitelist.example.yml` to `config/users_whitelist.yml`, edit it if you want
 1. Run `bin/rails s` to start the server
-1. After you think it is ok, you can deploy to yourself cloud server
+1. After you feel it is ok, you can deploy to yourself cloud server
 
 ## Why I do this
 
@@ -49,4 +49,17 @@ Some screenshots:
 
 ## TODO
 
-- [ ] Deploy to a cloud server to make it really works
+- [x] Deploy to a cloud server to make it really works
+
+  ![](./art/4_deploy.png)
+
+  deploy it to aws ec2, and now it is accessible public.
+
+  [Deploy Rails App to AWS EC2 by Nginx, Puma & Capistrano](http://52.27.68.65/books/baurine/study-note/_book/web/deployment.html)
+
+- [ ] Bind domain
+- [ ] List all gitbooks in home page
+- [ ] Improve static files access speed
+- [ ] Link `_book` folder to a short path
+- [ ] Use sidekiq to update git repos periodically
+- [ ] Monit the app
