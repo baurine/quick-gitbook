@@ -35,10 +35,14 @@ class BooksController < ApplicationController
     re_build = true
     if Dir.exists?(@repo)
       Dir.chdir(@repo)
+      `get checkout master`
       `git fetch origin`
-      git_status = `git status`
-      re_build = false if git_status.include?("Your branch is up-to-date")
-      `git rebase origin/master` if re_build
+      re_build = false if `git rev-parse HEAD` == `git rev-parse origin/master`
+      if re_build
+        `git checkout origin/master`
+        `git branch -f master HEAD`
+        `git checkout master`
+      end
     else
       # git clone
       repo_url = "git@github.com:#{@user}/#{@repo}.git"
