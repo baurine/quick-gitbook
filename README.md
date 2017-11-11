@@ -1,6 +1,6 @@
-# Quick Gitbook
+# QuickGitbook
 
-A web service likes [SourceGraph](https://sourcegraph.com/github.com/baurine/quick-gitbook) to quickly view your gitbook repo from github.
+A web service likes [Sourcegraph](https://sourcegraph.com/github.com/baurine/quick-gitbook) to quickly view your gitbook repo from github.
 
 It is simple and direct, not powerful and robust, just works.
 
@@ -12,10 +12,11 @@ It is simple and direct, not powerful and robust, just works.
 1. Copy `config/users_whitelist.example.yml` to `config/users_whitelist.yml`, edit it if you want
 1. Run `bin/rails s` to start the server
 1. After you feel it is ok, you can deploy to yourself cloud server
+1. In your cloud server, make sure it can fetch code from github
 
 ## Why I do this
 
-I put my study note in github, in different repos, and organize them as gitbook (has a SUMMARY.md for every repo). But I don't want to import them to [gitbook.com](https://www.gitbook.com/) one by one, neither want to put a `_book` folder inside the repo. I want a service likes [JitPack.io](https://jitpack.io/), [SourceGraph](https://about.sourcegraph.com/), [GitPitch](https://gitpitch.com/), you can directly append your repo link after above links then get what you want immediately.
+I put my study note in github, in different repos, and organize them as gitbook (has a SUMMARY.md for every repo). But I don't want to import them to [gitbook.com](https://www.gitbook.com/) one by one, neither want to put a `_book` folder inside the repo. I want a service likes [JitPack.io](https://jitpack.io/), [Sourcegraph](https://about.sourcegraph.com/), [GitPitch](https://gitpitch.com/), you can directly append your repo link after above links then get what you want immediately.
 
 ## How it works
 
@@ -57,7 +58,7 @@ Some screenshots:
 
   [Deploy Rails App to AWS EC2 by Nginx, Puma & Capistrano](http://52.27.68.65/books/baurine/study-note/_book/web/deployment.html)
 
-- [ ] Bind domain
+- [x] Bind domain
 - [ ] List all gitbooks in home page
 - [ ] Improve static files access speed
 - [ ] Link `_book` folder to a short path
