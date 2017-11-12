@@ -1,4 +1,5 @@
 require 'net/http'
+require 'open3'
 
 class BooksController < ApplicationController
   def index
@@ -55,7 +56,15 @@ class BooksController < ApplicationController
     end
     re_build = true unless Dir.exists?('_book')
     # gitbook build
-    `gitbook build` if re_build
+    # `gitbook build` if re_build
+    if re_build
+      # http://blog.honeybadger.io/capturing-stdout-stderr-from-shell-commands-via-ruby/
+      # https://blog.bigbinary.com/2012/10/18/backtick-system-exec-in-ruby.html
+      stdout, stderr, status = Open3.capture3("gitbook build")
+      if status.exitstatus != 0
+        (render plain: stderr + stdout) && return
+      end
+    end
 
     # final
     book_url = "/books/#{@user}/#{@repo}/_book/"
