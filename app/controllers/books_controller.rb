@@ -1,6 +1,10 @@
 require 'net/http'
 
 class BooksController < ApplicationController
+  def index
+    render plain: 'coming soon'
+  end
+
   def show
     @user = params[:user]
     @repo = params[:repo]

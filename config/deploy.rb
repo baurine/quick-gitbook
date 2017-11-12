@@ -39,7 +39,8 @@ set :linked_files, fetch(:linked_files, []).push(
   'config/users_whitelist.yml',
 )
 set :linked_dirs, fetch(:linked_dirs, []).push(
-  'public/books'
+  'public/books',
+  'log'
 )
 
 namespace :puma do
